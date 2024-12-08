@@ -1,0 +1,50 @@
+from tensorflow.keras import datasets,layers,models
+get_ipython().system('pip install tensorflow')
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from tensorflow.keras import datasets,layers,models
+(x_train , y_train),(x_test,y_test) = datasets.mnist.load_data()
+
+
+x_train, x_test = x_train/255.0, x_test /255.0
+x_train = x_train.reshape(-1,28*28)
+x_test = x_test.reshape(-1,28*28)
+
+
+model = models.Sequential([
+layers.Dense(128, activation='relu', input_shape=(784,)),
+layers.Dense(64, activation='relu'),
+layers.Dense(10, activation='softmax')
+])
+
+
+model.compile(optimizer='adam',
+loss='sparse_categorical_crossentropy',
+metrics=['accuracy'])
+
+
+model.fit(x_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
+
+
+test_loss, test_accuracy = model.evaluate(x_test, y_test)
+print(f'Test accuracy: {test_accuracy:.4f}')
+
+
+images = x_test[10:20]
+images_flattened = images.reshape(10, 784)
+
+predicted_classes = np.argmax(model.predict(images_flattened), axis=-1)
+
+plt.figure(figsize=(15, 5))
+for i in range(images.shape[0]):
+    plt.subplot(2, 5, i + 1)
+    plt.imshow(images[i].reshape(28, 28), cmap='gray')
+    plt.title(f'Predicted: {predicted_classes[i]}')
+    plt.axis('off')
+
+
+plt.tight_layout()
+plt.show()

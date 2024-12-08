@@ -1,0 +1,27 @@
+import numpy as np
+
+
+x1 = np.array([0,0,1,1])
+x2 = np.array([0,1,0,1])
+wt = np.random.rand(2)
+bias = np.random.rand(1)
+
+
+y = np.array([0,0,0,1])
+def sigmoid(x):
+    return 1/(1+np.exp(-x))
+
+
+for i in range(4):
+    inputs = np.array([x1[i],x2[i]])
+    z = np.dot(inputs, wt)+bias
+    output = sigmoid(z)
+    print(f"output for x1[{i}]x2[{i}] is {output}")
+
+
+
+********** Output ************
+output for x1[0]x2[0] is [0.63430112]
+output for x1[1]x2[1] is [0.74564097]
+output for x1[2]x2[2] is [0.76602065]
+output for x1[3]x2[3] is [0.84693486]
